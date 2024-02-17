@@ -22,6 +22,36 @@
         }
 
     }
+
+    function playRPS(playerSelection, computerSelection) {
+        if (playerSelection.toLowerCase() === computerSelection.toLowerCase()) {
+            return `It's a tie! You both picked ${playerSelection}.`
+        }
+        else if (playerSelection.toLowerCase() === 'rock') {
+            if (computerSelection.toLowerCase() === 'scissors') {
+                return `You win! ${playerSelection} beats ${computerSelection}.`
+            } else {
+                return `You lose! ${computerSelection} beats ${playerSelection}.`
+            }
+        }
+        else if (playerSelection.toLowerCase() === 'paper') {
+            if (computerSelection.toLowerCase() === 'rock') {
+                return `You win! ${playerSelection} beats ${computerSelection}.`
+            } else {
+                return `You lose! ${computerSelection} beats ${playerSelection}.`
+            }
+        }
+        else if (playerSelection.toLowerCase() === 'scissors') {
+            if (computerSelection.toLowerCase() === 'paper') {
+                return `You win! ${playerSelection} beats ${computerSelection}.`
+            } else {
+                return `You lose! ${computerSelection} beats ${playerSelection}.`
+            }
+        }
+        else {
+            return 'Invalid input. Please enter rock, paper, or scissors.'
+        }
+    }
 </script>
 
 <body>
