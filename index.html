@@ -25,32 +25,67 @@
 
     function playRPS(playerSelection, computerSelection) {
         if (playerSelection.toLowerCase() === computerSelection.toLowerCase()) {
-            return `It's a tie! You both picked ${playerSelection}.`
+            return [0.5, `It's a tie! You both picked ${playerSelection}.`]
         }
         else if (playerSelection.toLowerCase() === 'rock') {
             if (computerSelection.toLowerCase() === 'scissors') {
-                return `You win! ${playerSelection} beats ${computerSelection}.`
+                return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
             } else {
-                return `You lose! ${computerSelection} beats ${playerSelection}.`
+                return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
             }
         }
         else if (playerSelection.toLowerCase() === 'paper') {
             if (computerSelection.toLowerCase() === 'rock') {
-                return `You win! ${playerSelection} beats ${computerSelection}.`
+                return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
             } else {
-                return `You lose! ${computerSelection} beats ${playerSelection}.`
+                return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
             }
         }
         else if (playerSelection.toLowerCase() === 'scissors') {
             if (computerSelection.toLowerCase() === 'paper') {
-                return `You win! ${playerSelection} beats ${computerSelection}.`
+                return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
             } else {
-                return `You lose! ${computerSelection} beats ${playerSelection}.`
+                return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
             }
         }
         else {
-            return 'Invalid input. Please enter rock, paper, or scissors.'
+            return [5, prompt('Invalid input. Please enter rock, paper, or scissors.')]
         }
+    }
+
+    function playGame(player, computer) {
+        const playerDecision = prompt("Please decide between Rock, Paper or Scissors.")
+        const computerDecision = getComputerChoice()
+
+        content = playRPS(playerDecision, computerDecision)
+        const result = content[0]
+        console.log(`Result = ${result}`)
+        const extraStuff = content[1]
+        if (result === 5) {
+            prompt(extraStuff)
+        } else {
+            console.log()
+            player = player + result
+            computer = computer + (1 - result)
+            alert(`${extraStuff} Current scores: Player: ${player} || Computer: ${computer}`)
+        }
+        return { player: player, computer: computer }
+    }
+
+    let player = 0;
+    let computer = 0;
+    for (let i = 0; i < 5; i++) {
+        console.log(i, player, computer);
+        let result = playGame(player, computer);
+        player = result.player;
+        computer = result.computer;
+    }
+    if (player > computer) {
+        alert(`The overall winner is you with ${player} points!`)
+    } else if (player < computer) {
+        alert(`The overall winner is The computer with ${computer} points!`)
+    } else {
+        alert("With 2.5 points each, it's a tie!")
     }
 </script>
 
