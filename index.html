@@ -7,89 +7,121 @@
     <title>Document</title>
 </head>
 
-<script>
-    function getComputerChoice() {
-        var randomNumber = Math.floor(Math.random() * 3);
-        switch (randomNumber) {
-            case 0:
-                return 'rock';
-            case 1:
-                return 'paper';
-            case 2:
-                return 'scissors';
-            default:
-                return "scissors";
-        }
-
-    }
-
-    function playRPS(playerSelection, computerSelection) {
-        if (playerSelection.toLowerCase() === computerSelection.toLowerCase()) {
-            return [0.5, `It's a tie! You both picked ${playerSelection}.`]
-        }
-        else if (playerSelection.toLowerCase() === 'rock') {
-            if (computerSelection.toLowerCase() === 'scissors') {
-                return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
-            } else {
-                return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
-            }
-        }
-        else if (playerSelection.toLowerCase() === 'paper') {
-            if (computerSelection.toLowerCase() === 'rock') {
-                return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
-            } else {
-                return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
-            }
-        }
-        else if (playerSelection.toLowerCase() === 'scissors') {
-            if (computerSelection.toLowerCase() === 'paper') {
-                return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
-            } else {
-                return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
-            }
-        }
-        else {
-            return [5, prompt('Invalid input. Please enter rock, paper, or scissors.')]
-        }
-    }
-
-    function playGame(player, computer) {
-        const playerDecision = prompt("Please decide between Rock, Paper or Scissors.")
-        const computerDecision = getComputerChoice()
-
-        content = playRPS(playerDecision, computerDecision)
-        const result = content[0]
-        console.log(`Result = ${result}`)
-        const extraStuff = content[1]
-        if (result === 5) {
-            prompt(extraStuff)
-        } else {
-            console.log()
-            player = player + result
-            computer = computer + (1 - result)
-            alert(`${extraStuff} Current scores: Player: ${player} || Computer: ${computer}`)
-        }
-        return { player: player, computer: computer }
-    }
-
-    let player = 0;
-    let computer = 0;
-    for (let i = 0; i < 5; i++) {
-        console.log(i, player, computer);
-        let result = playGame(player, computer);
-        player = result.player;
-        computer = result.computer;
-    }
-    if (player > computer) {
-        alert(`The overall winner is you with ${player} points!`)
-    } else if (player < computer) {
-        alert(`The overall winner is The computer with ${computer} points!`)
-    } else {
-        alert("With 2.5 points each, it's a tie!")
-    }
-</script>
-
 <body>
+    <h1>Rock, Paper, Scissors</h1>
+    <div>Press a button to start a game!</div>
+
+    <br>
+    <button id="Rock">Rock</button>
+    <button id="Paper">Paper</button>
+    <button id="Scissors">Scissors</button>
+
+    <br>
+
+    <div>Scores
+        <p>Player: </p>
+        <p id="playerScore">0</p>
+        <p>Computer: </p>
+        <p id="computerScore">0</p>
+    </div>
+
+    <script>
+        let player = 0;
+        let computer = 0;
+        document.getElementById("Rock").addEventListener("click", function () {
+            playGame(player, computer, 'Rock');
+            deduceOverallWinner()
+        });
+        document.getElementById("Paper").addEventListener("click", function () {
+            playGame(player, computer, 'Paper');
+            deduceOverallWinner()
+        });
+        document.getElementById("Scissors").addEventListener("click", function () {
+            playGame(player, computer, 'Scissors');
+            deduceOverallWinner()
+        });
+
+        function playGame(player, computer, playerDecision) {
+            const computerDecision = getComputerChoice()
+
+            function getComputerChoice() {
+                const choices = ['rock', 'paper', 'scissors']
+                const randomNumber = Math.floor(Math.random() * 3)
+                return choices[randomNumber]
+            }
+
+
+            content = returnWinningMessage(playerDecision, computerDecision)
+
+            function returnWinningMessage(playerSelection, computerSelection) {
+                if (playerSelection.toLowerCase() === computerSelection.toLowerCase()) {
+                    return [0.5, `It's a tie! You both picked ${playerSelection}.`]
+                }
+                else if (playerSelection.toLowerCase() === 'rock') {
+                    if (computerSelection.toLowerCase() === 'scissors') {
+                        return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
+                    } else {
+                        return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
+                    }
+                }
+                else if (playerSelection.toLowerCase() === 'paper') {
+                    if (computerSelection.toLowerCase() === 'rock') {
+                        return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
+                    } else {
+                        return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
+                    }
+                }
+                else if (playerSelection.toLowerCase() === 'scissors') {
+                    if (computerSelection.toLowerCase() === 'paper') {
+                        return [1, `You win! ${playerSelection} beats ${computerSelection}.`]
+                    } else {
+                        return [0, `You lose! ${computerSelection} beats ${playerSelection}.`]
+                    }
+                }
+                else {
+                    return [5, prompt('Invalid input. Please enter rock, paper, or scissors.')]
+                }
+            }
+
+            const result = content[0]
+            console.log(`Result = ${result}`)
+            const extraStuff = content[1]
+            if (result === 5) {
+                prompt(extraStuff)
+            } else {
+                currentPlayerScore = parseFloat(document.getElementById("playerScore").innerHTML)
+                currentComputerScore = parseFloat(document.getElementById("computerScore").innerHTML)
+                player = player + result
+                computer = computer + (1 - result)
+                document.getElementById("playerScore").innerHTML = currentPlayerScore + player
+                document.getElementById("computerScore").innerHTML = computer + currentComputerScore
+
+                alert(`${extraStuff} Current scores: Player: ${player} || Computer: ${computer}`)
+            }
+
+            return [player, computer]
+        }
+
+        function deduceOverallWinner() {
+            let player = parseFloat(document.getElementById("playerScore").innerHTML)
+            let computer = parseFloat(document.getElementById("computerScore").innerHTML);
+
+            console.log(`player = ${player} || computer = ${computer} ||| ${player + computer}`)
+
+            if (player + computer === 5) {
+
+                if (player > computer) {
+                    alert(`The overall winner is you with ${player} points!`)
+                } else if (player < computer) {
+                    alert(`The overall winner is The computer with ${computer} points!`)
+                } else {
+                    alert("With 2.5 points each, it's a tie!")
+                }
+            }
+        }
+
+
+    </script>
 
 </body>
 
